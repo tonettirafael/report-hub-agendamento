@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Métricas HUB - Produtividade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .metric-value { font-size: 1.875rem; font-weight: 700; color: #1e293b; }
+        .metric-label { font-size: 0.875rem; color: #64748b; font-weight: 500; }
+        .has-tooltip { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 4px; cursor: help; }
+        
+        .step-number { 
+            width: 24px; 
+            height: 24px; 
+            min-width: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+            font-size: 11px; 
+            font-weight: bold; 
+            flex-shrink: 0; 
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">Performance HUB - Mondelez x Assaí</h1>
+                <p class="text-slate-500">Monitoramento de Produtividade e Evolução de Processos</p>
+            </div>
+            <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+                Atualizado: 30/01/2026
+            </div>
+        </header>
+
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="card p-6 border-l-4 border-blue-500">
+                <p class="metric-label text-blue-600">Total Cargas Planejadas</p>
+                <p class="metric-value" id="total-planejadas">0</p>
+                <p class="text-xs text-slate-400 mt-2">Período: 27/01 - 30/01</p>
+            </div>
+            <div class="card p-6 border-l-4 border-green-500">
+                <p class="metric-label text-green-600">Total Automatizadas</p>
+                <p class="metric-value" id="total-automatizadas">0</p>
+                <p class="text-xs text-slate-400 mt-2">Sucesso na automação</p>
+            </div>
+            <div class="card p-6 border-l-4 border-purple-500">
+                <p class="metric-label text-purple-600">Média Horário (Recente)</p>
+                <p class="metric-value">08:52</p>
+                <p class="text-xs text-slate-400 mt-2">Média dos últimos 4 dias</p>
+            </div>
+            <div class="card p-6 border-l-4 border-orange-500">
+                <p class="metric-label text-orange-600">Cobertura Geral Acum.</p>
+                <p class="metric-value" id="eficiencia-geral">0%</p>
+                <p class="text-xs text-slate-400 mt-2">Automatizadas / Planejadas</p>
+            </div>
+        </div>
+
+        <!-- Seção: Comparativo de Processo -->
+        <div class="card p-6 mb-8 bg-white border border-slate-200">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                Jornada de Solicitação de Agenda: Antes vs. HUB
+            </h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Processo Antigo -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-red-600 flex items-center gap-2 uppercase text-xs tracking-widest">
+                        <span class="w-2 h-2 bg-red-600 rounded-full"></span> Processo Anterior (Manual)
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-100">
+                            <span class="step-number bg-red-600 text-white">1</span>
+                            <p class="text-sm text-slate-700">Recebimento de cargas (Com NF, Sem NF e Data Transp.).</p>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-100">
+                            <span class="step-number bg-red-600 text-white">2.1</span>
+                            <div>
+                                <p class="text-sm font-bold text-red-800">Processo s/ NF</p>
+                                <p class="text-sm text-slate-700">Acessa o portal, faz o de/para manual dos itens e preenche a planilha</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-100">
+                            <span class="step-number bg-red-600 text-white">2.2</span>
+                            <div>
+                                <p class="text-sm font-bold text-red-800">Processo c/ NF</p>
+                                <p class="text-sm text-slate-700">Aguarda faturamento da nota, acessa o portal, faz o de/para manual dos itens e preenche a planilha</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-100">
+                            <span class="step-number bg-red-600 text-white">3</span>
+                            <p class="text-sm text-slate-700">Sobe planilha no portal e aguarda aprovação das agendas.</p>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-100">
+                            <span class="step-number bg-red-200 text-red-700">4</span>
+                            <p class="text-sm text-slate-700">Monitoramento manual a cada 2h para verificar aprovação no Assaí.</p>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-100">
+                            <span class="step-number bg-red-200 text-red-700">5</span>
+                            <p class="text-sm text-slate-700">Lançamento manual de datas e senhas no sistema MultiEmbarcador.</p>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-red-50/50 rounded-lg border border-red-100">
+                            <span class="step-number bg-red-200 text-red-700">6</span>
+                            <p class="text-sm text-slate-700">Agrupamento manual de cargas e envio de e-mail de formalização aos transportadores.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processo Atual -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-green-600 flex items-center gap-2 uppercase text-xs tracking-widest">
+                        <span class="w-2 h-2 bg-green-600 rounded-full"></span> Processo HUB (Automatizado)
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+                            <span class="step-number bg-green-600 text-white">1</span>
+                            <p class="text-sm text-slate-700">Recebimento integrado das cargas no ecossistema HUB.</p>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100 shadow-sm">
+                            <span class="step-number bg-green-600 text-white">2.1</span>
+                            <div>
+                                <p class="text-sm font-bold text-green-800">Automação s/ NF</p>
+                                <p class="text-sm text-slate-700">Agendamento automático via integração. De/Paras são salvos e reutilizados.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100 shadow-sm">
+                            <span class="step-number bg-green-600 text-white">2.2</span>
+                            <div>
+                                <p class="text-sm font-bold text-green-800">Automação c/ NF</p>
+                                <p class="text-sm text-slate-700">Após emissão da NF, agendamento é automático via integração.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+                            <span class="step-number bg-green-600 text-white">3</span>
+                            <p class="text-sm text-slate-700">Status "Conquistada" reflete automaticamente no HUB após aprovação.</p>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+                            <span class="step-number bg-green-600 text-white">4</span>
+                            <p class="text-sm text-slate-700">Lançamento manual de datas e senhas no sistema MultiEmbarcador.</p>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
+                            <span class="step-number bg-green-600 text-white">5</span>
+                            <p class="text-sm text-slate-700">Consolidação das cargas com status Conquistada e envio manual de e-mail aos transportadores.</p>
+                        </div>
+                        
+                        <!-- Destaque de Benefícios -->
+                        <div class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                            <h5 class="text-xs font-bold text-indigo-700 uppercase mb-2">Principais Diferenciais</h5>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="text-[11px] font-medium text-indigo-900 bg-white/50 p-2 rounded">🚀 Redução de trabalho manual</div>
+                                <div class="text-[11px] font-medium text-indigo-900 bg-white/50 p-2 rounded">🧠 De/Paras reutilizáveis.</div>
+                                <div class="text-[11px] font-medium text-indigo-900 bg-white/50 p-2 rounded">⏱️ Redução no horário de solicitação e tempo para consquista de agenda</div>
+                                <div class="text-[11px] font-medium text-indigo-900 bg-white/50 p-2 rounded">✅ Visibilidade em Tempo Real</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roadmap -->
+            <div class="mt-8 pt-6 border-t border-slate-100">
+                <h4 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2 italic">
+                    Roadmap & Próximos Passos
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-3 bg-orange-50 border border-orange-100 rounded-lg text-xs">
+                        <p class="font-bold text-orange-700 mb-1">AUTOMAÇÃO DE COMUNICAÇÃO</p>
+                        HUB automatizará a formalização com transportadores.
+                    </div>
+                    <div class="p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs">
+                        <p class="font-bold text-blue-700 mb-1">ROLLOUT ESTRATÉGICO</p>
+                        Próxima semana: Início do piloto com Carrefour.
+                    </div>
+                    <div class="p-3 bg-slate-100 border border-slate-200 rounded-lg text-xs">
+                        <p class="font-bold text-slate-700 mb-1">PADRONIZAÇÃO</p>
+                        Uniformização dos retornos de solicitações via e-mail.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="space-y-6">
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-slate-700">Evolução do Horário de Solicitação</h3>
+                    <div class="h-64">
+                        <canvas id="horariosChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card p-5 bg-slate-50 border border-slate-200">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="p-2 bg-blue-600 rounded-lg text-white">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm uppercase">Análise de Performance Temporal</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Com o processo do HUB, visualizamos a <strong>redução absoluta no horário de execução</strong>. Enquanto no antes do HUB as solicitações ocorriam entre 11h e 13h, a operação com HUB estabilizou-se na base (antes das 09h), liberando o restante do dia para a gestão de exceções e agendas sem automatização.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h3 class="text-lg font-semibold mb-4 text-slate-700">Volume de Cargas Diário</h3>
+                <canvas id="cargasChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Tabela -->
+        <div class="card overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                <h3 class="font-semibold text-slate-700">Detalhamento Operacional (Histórico HUB)</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="text-slate-500 uppercase bg-slate-50">
+                            <th class="px-4 py-4 font-bold border-b">Data</th>
+                            <th class="px-4 py-4 font-bold border-b text-blue-600">Agenda</th>
+                            <th class="px-4 py-4 font-bold border-b bg-blue-50/50">Plan. s/ NF</th>
+                            <th class="px-4 py-4 font-bold border-b bg-blue-50/50">Auto. s/ NF</th>
+                            <th class="px-4 py-4 font-bold border-b bg-blue-50 text-blue-800">% s/ NF</th>
+                            <th class="px-4 py-4 font-bold border-b bg-indigo-50/50">Plan. c/ NF</th>
+                            <th class="px-4 py-4 font-bold border-b bg-indigo-50/50">Auto. c/ NF</th>
+                            <th class="px-4 py-4 font-bold border-b bg-indigo-50 text-indigo-800">% c/ NF</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-600 divide-y divide-slate-100" id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const prodData = [
+            { data: "27/01/2026", planejadoSemNF: 3, planejadoComNF: 23, autoSemNF: 3, autoComNF: 22, horario: "09:47" },
+            { data: "28/01/2026", planejadoSemNF: 2, planejadoComNF: 12, autoSemNF: 2, autoComNF: 5, horario: "08:52" }, 
+            { data: "29/01/2026", planejadoSemNF: 8, planejadoComNF: 13, autoSemNF: 8, autoComNF: 2, horario: "08:48" },
+            { data: "30/01/2026", planejadoSemNF: 4, planejadoComNF: 26, autoSemNF: 4, autoComNF: 12, horario: "08:55" },
+            { data: "02/02/2026", planejadoSemNF: 14, planejadoComNF: 34, autoSemNF: 14, autoComNF: 22, horario: "08:34" }
+        ];
+
+        const historicoHorarios = [
+            { data: "19/01", hora: "13:47", decimal: 13.78 },
+            { data: "20/01", hora: "11:29", decimal: 11.48 },
+            { data: "21/01", hora: "10:36", decimal: 10.60 },
+            { data: "22/01", hora: "10:22", decimal: 10.36 },
+            { data: "23/01", hora: "15:33", decimal: 15.55 },
+            { data: "26/01", hora: "12:56", decimal: 12.93 },
+            { data: "27/01", hora: "09:47", decimal: 9.78 },
+            { data: "28/01", hora: "08:52", decimal: 8.86 },
+            { data: "29/01", hora: "08:48", decimal: 8.80 },
+            { data: "30/01", hora: "08:55", decimal: 8.91 },
+            { data: "02/02", hora: "08:34", decimal: 8.52 }
+        ];
+
+        function initDashboard() {
+            const tableBody = document.getElementById('table-body');
+            let totalP = 0, totalA = 0;
+            
+            prodData.forEach(row => {
+                const diaP = row.planejadoSemNF + row.planejadoComNF;
+                const diaA = row.autoSemNF + row.autoComNF;
+                totalP += diaP; totalA += diaA;
+                
+                const efSemNF = ((row.autoSemNF / row.planejadoSemNF) * 100).toFixed(1) + '%';
+                const efComNF = ((row.autoComNF / row.planejadoComNF) * 100).toFixed(1) + '%';
+                
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-4 py-4 font-medium text-slate-900">${row.data}</td>
+                        <td class="px-4 py-4 text-blue-600 font-semibold">${row.horario}</td>
+                        <td class="px-4 py-4 bg-blue-50/20">${row.planejadoSemNF}</td>
+                        <td class="px-4 py-4 bg-blue-50/20 text-green-600 font-bold">${row.autoSemNF}</td>
+                        <td class="px-4 py-4 bg-blue-50 font-bold text-blue-800">${efSemNF}</td>
+                        <td class="px-4 py-4 bg-indigo-50/20">${row.planejadoComNF}</td>
+                        <td class="px-4 py-4 bg-indigo-50/20 text-blue-600 font-bold">${row.autoComNF}</td>
+                        <td class="px-4 py-4 bg-indigo-50 font-bold text-indigo-800">${efComNF}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('total-planejadas').innerText = totalP;
+            document.getElementById('total-automatizadas').innerText = totalA;
+            document.getElementById('eficiencia-geral').innerText = ((totalA / totalP) * 100).toFixed(1) + '%';
+
+            new Chart(document.getElementById('horariosChart'), {
+                type: 'line',
+                data: {
+                    labels: historicoHorarios.map(h => h.data),
+                    datasets: [{
+                        label: 'Horário de Solicitação',
+                        data: historicoHorarios.map(h => h.decimal),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true, tension: 0.3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: { 
+                    maintainAspectRatio: false, 
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        y: { 
+                            min: 7, 
+                            max: 17, 
+                            reverse: false, // Ordem crescente: menores embaixo, maiores em cima
+                            ticks: { 
+                                callback: v => v + ':00',
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Horário do Dia',
+                                font: { size: 10 }
+                            }
+                        } 
+                    } 
+                }
+            });
+
+            new Chart(document.getElementById('cargasChart'), {
+                type: 'bar',
+                data: {
+                    labels: prodData.map(d => d.data.split('/')[0] + '/' + d.data.split('/')[1]),
+                    datasets: [
+                        { label: 'Plan. Sem NF', data: prodData.map(d => d.planejadoSemNF), backgroundColor: '#3b82f6' },
+                        { label: 'Plan. Com NF', data: prodData.map(d => d.planejadoComNF), backgroundColor: '#94a3b8' }
+                    ]
+                }
+            });
+        }
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
