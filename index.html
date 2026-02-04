@@ -12,7 +12,6 @@
         .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
         .metric-value { font-size: 1.875rem; font-weight: 700; color: #1e293b; }
         .metric-label { font-size: 0.875rem; color: #64748b; font-weight: 500; }
-        .has-tooltip { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 4px; cursor: help; }
         
         .step-number { 
             width: 24px; 
@@ -26,6 +25,111 @@
             font-weight: bold; 
             flex-shrink: 0; 
         }
+
+        /* Funnel Styles */
+        .funnel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+        }
+        .funnel-step {
+            width: 100%;
+            padding: 8px;
+            text-align: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+        .funnel-top { background-color: #3b82f6; clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%); }
+        .funnel-mid { background-color: #6366f1; clip-path: polygon(10% 0%, 90% 0%, 80% 100%, 20% 100%); }
+        .funnel-bot { background-color: #10b981; clip-path: polygon(20% 0%, 80% 0%, 75% 100%, 25% 100%); border-radius: 0 0 12px 12px; }
+
+        /* Mind Map Tree Styles - Full Detail */
+        .tree-container {
+            width: 100%;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Ensures strict sizing for the full map */
+            min-width: 1200px; 
+        }
+        .tree-node {
+            padding: 6px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            white-space: nowrap;
+            color: #475569;
+        }
+        /* Color overrides based on image */
+        .node-purple { border-color: #a855f7; color: #6b21a8; }
+        .node-orange { border-color: #f97316; color: #c2410c; }
+        
+        .tree-branch {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .tree-children {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            width: 100%;
+            position: relative;
+            padding-top: 20px;
+        }
+        /* Horizontal connector line */
+        .tree-children::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50px;
+            right: 50px;
+            height: 1px;
+            background: #cbd5e1;
+        }
+        /* Specific overrides for connector colors */
+        .children-orange::before { background: #f97316; }
+        .children-purple::before { background: #a855f7; }
+
+        .child-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        /* Vertical connector line */
+        .child-node::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 1px;
+            height: 20px;
+            background: #cbd5e1;
+        }
+        /* Specific vertical connector colors */
+        .connector-orange::before { background: #f97316; }
+        .connector-purple::before { background: #a855f7; }
+
+        .flow-text { font-size: 10px; margin-top: 6px; text-align: center; color: #64748b; }
+        .auto-tag { color: #10b981; font-weight: 700; }
+        .manual-tag { color: #f43f5e; font-weight: 700; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -61,6 +165,87 @@
                 <p class="metric-label text-orange-600">Cobertura Geral Acum.</p>
                 <p class="metric-value" id="eficiencia-geral">0%</p>
                 <p class="text-xs text-slate-400 mt-2">Automatizadas / Planejadas</p>
+            </div>
+        </div>
+        
+        <!-- ESTRUTURA DE CANAIS (MAPA MENTAL) -->
+        <div class="card p-6 mb-8 bg-white border border-slate-200 overflow-hidden">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                Estrutura de Canais Mondelez & Fluxos Assaí
+            </h3>
+            
+            <div class="tree-container">
+                <div class="tree">
+                    <!-- Nível 0: Root -->
+                    <div class="tree-node node-purple">CANAIS MONDELEZ</div>
+                    
+                    <!-- Nível 1: Canais -->
+                    <div class="tree-children children-orange">
+                        
+                        <!-- Nó Principal: Cash & Carry -->
+                        <div class="child-node connector-orange">
+                            <div class="tree-node node-purple">Cash&Carry (43%)</div>
+                            
+                            <!-- Nível 2: Players C&C -->
+                            <div class="tree-children children-purple">
+                                
+                                <!-- Assaí (Foco) -->
+                                <div class="child-node connector-purple">
+                                    <div class="tree-node node-purple">Assaí (40%)</div>
+                                    
+                                    <!-- Nível 3: Tipos de Agendamento Assaí -->
+                                    <div class="tree-children children-purple">
+                                        
+                                        <!-- Sem NF -->
+                                        <div class="child-node connector-purple">
+                                            <div class="tree-node border-none shadow-none text-xs">Agendamento sem NF (22%)</div>
+                                            <!-- Fluxo Sem NF -->
+                                            <div class="flex flex-col items-center mt-2 gap-1 relative">
+                                                <div class="w-px h-4 bg-purple-200"></div>
+                                                <div class="flow-text">Solicitação <span class="auto-tag">(Automatizado)</span></div>
+                                                <div class="w-px h-4 bg-purple-200"></div>
+                                                <div class="flow-text">Conquista <span class="auto-tag">(Automatizado)</span></div>
+                                                <div class="w-px h-4 bg-purple-200"></div>
+                                                <div class="flow-text">Formalização <span class="manual-tag">(Manual)</span></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Com NF -->
+                                        <div class="child-node connector-purple">
+                                            <div class="tree-node border-none shadow-none text-xs">Agendamento com NF (78%)</div>
+                                            <!-- Fluxo Com NF -->
+                                            <div class="flex flex-col items-center mt-2 gap-1 relative">
+                                                <div class="w-px h-4 bg-purple-200"></div>
+                                                <div class="flow-text">Aguarda faturamento <span class="manual-tag">(Manual)</span></div>
+                                                <div class="w-px h-4 bg-purple-200"></div>
+                                                <div class="flow-text">Solicitação <span class="auto-tag">(Automatizado)</span></div>
+                                                <div class="w-px h-4 bg-purple-200"></div>
+                                                <div class="flow-text">Conquista <span class="auto-tag">(Automatizado)</span></div>
+                                                <div class="w-px h-4 bg-purple-200"></div>
+                                                <div class="flow-text">Formalização <span class="manual-tag">(Manual)</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Outros Players C&C -->
+                                <div class="child-node connector-purple"><div class="tree-node node-purple">Fort Atacadista (19%)</div></div>
+                                <div class="child-node connector-purple"><div class="tree-node node-purple">Atacadão (18%)</div></div>
+                                <div class="child-node connector-purple"><div class="tree-node node-purple">Muffato (10%)</div></div>
+                                <div class="child-node connector-purple"><div class="tree-node node-purple">Tenda (4%)</div></div>
+                                <div class="child-node connector-purple"><div class="tree-node node-purple">Outros (9%)</div></div>
+                            </div>
+                        </div>
+
+                        <!-- Outros Canais -->
+                        <div class="child-node connector-orange"><div class="tree-node node-purple">TT (27%)</div></div>
+                        <div class="child-node connector-orange"><div class="tree-node node-purple">SMR (15%)</div></div>
+                        <div class="child-node connector-orange"><div class="tree-node node-purple">GKA (12%)</div></div>
+                        <div class="child-node connector-orange"><div class="tree-node node-orange">Farma (2%)</div></div>
+                        <div class="child-node connector-orange"><div class="tree-node node-orange">FoodService (1%)</div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -216,6 +401,24 @@
                 <canvas id="cargasChart" height="200"></canvas>
             </div>
         </div>
+        
+         <!-- Funil de Conversão Diário -->
+        <div class="card p-6 mb-8 bg-slate-50 border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                Funil de Processamento Diário (Conversão de Automação)
+            </h3>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6" id="funnel-grid">
+                <!-- Injetado via JS -->
+            </div>
+            
+            <div class="mt-6 flex flex-wrap gap-4 justify-center text-[10px] font-bold uppercase tracking-wider">
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-500 rounded-sm"></span> Topo: Total Cargas</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-indigo-500 rounded-sm"></span> Meio: Destino Assaí</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-green-500 rounded-sm"></span> Fundo: Automatizadas</div>
+            </div>
+        </div>
 
         <!-- Tabela -->
         <div class="card overflow-hidden">
@@ -349,3 +552,4 @@
 </body>
 
 </html>
+
