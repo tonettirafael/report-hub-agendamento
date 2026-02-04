@@ -470,8 +470,9 @@
             { data: "03/02", hora: "09:12", decimal: 9.04 }
         ];
 
-        function initDashboard() {
+       function initDashboard() {
             const tableBody = document.getElementById('table-body');
+            const funnelGrid = document.getElementById('funnel-grid');
             let totalP = 0, totalA = 0;
             
             prodData.forEach(row => {
@@ -482,6 +483,7 @@
                 const efSemNF = ((row.autoSemNF / row.planejadoSemNF) * 100).toFixed(1) + '%';
                 const efComNF = ((row.autoComNF / row.planejadoComNF) * 100).toFixed(1) + '%';
                 
+                // Tabela
                 tableBody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-4 py-4 font-medium text-slate-900">${row.data}</td>
@@ -493,6 +495,17 @@
                         <td class="px-4 py-4 bg-indigo-50/20 text-blue-600 font-bold">${row.autoComNF}</td>
                         <td class="px-4 py-4 bg-indigo-50 font-bold text-indigo-800">${efComNF}</td>
                     </tr>
+                `;
+
+                // Funis
+                funnelGrid.innerHTML += `
+                    <div class="funnel-container">
+                        <p class="text-[10px] font-bold text-slate-400 mb-2">${row.data.split('/')[0] + '/' + row.data.split('/')[1]}</p>
+                        <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${row.totalCargasDia}</div>
+                        <div class="funnel-step funnel-mid" title="Cargas destino Assaí">${row.totalAssai}</div>
+                        <div class="funnel-step funnel-bot" title="Cargas Automatizadas HUB">${diaA}</div>
+                        <p class="text-[9px] font-bold text-green-600 mt-1">${((diaA/row.totalAssai)*100).toFixed(0)}% Conv.</p>
+                    </div>
                 `;
             });
 
@@ -521,15 +534,9 @@
                         y: { 
                             min: 7, 
                             max: 17, 
-                            reverse: false, // Ordem crescente: menores embaixo, maiores em cima
                             ticks: { 
                                 callback: v => v + ':00',
                                 stepSize: 1
-                            },
-                            title: {
-                                display: true,
-                                text: 'Horário do Dia',
-                                font: { size: 10 }
                             }
                         } 
                     } 
@@ -552,4 +559,5 @@
 </body>
 
 </html>
+
 
