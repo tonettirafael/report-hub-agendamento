@@ -501,8 +501,8 @@
                 funnelGrid.innerHTML += `
                     <div class="funnel-container">
                         <p class="text-[10px] font-bold text-slate-400 mb-2">${row.data.split('/')[0] + '/' + row.data.split('/')[1]}</p>
-                        <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${row.totalCargasDia}</div>
-                        <div class="funnel-step funnel-mid" title="Cargas destino Assaí">${row.totalAssai}</div>
+                        <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${diaP}</div>
+                        <div class="funnel-step funnel-mid" title="Cargas destino Assaí">${diaP}</div>
                         <div class="funnel-step funnel-bot" title="Cargas Automatizadas HUB">${diaA}</div>
                         <p class="text-[9px] font-bold text-green-600 mt-1">${((diaA/row.totalAssai)*100).toFixed(0)}% Conv.</p>
                     </div>
@@ -559,5 +559,6 @@
 </body>
 
 </html>
+
 
 
