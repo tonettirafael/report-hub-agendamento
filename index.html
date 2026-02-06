@@ -169,85 +169,7 @@
         </div>
         
         <!-- ESTRUTURA DE CANAIS (MAPA MENTAL) -->
-        <div class="card p-6 mb-8 bg-white border border-slate-200 overflow-hidden">
-            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                Estrutura de Canais Mondelez & Fluxos Assaí
-            </h3>
-            
-            <div class="tree-container">
-                <div class="tree">
-                    <!-- Nível 0: Root -->
-                    <div class="tree-node node-purple">CANAIS MONDELEZ</div>
-                    
-                    <!-- Nível 1: Canais -->
-                    <div class="tree-children children-orange">
-                        
-                        <!-- Nó Principal: Cash & Carry -->
-                        <div class="child-node connector-orange">
-                            <div class="tree-node node-purple">Cash&Carry (43%)</div>
-                            
-                            <!-- Nível 2: Players C&C -->
-                            <div class="tree-children children-purple">
-                                
-                                <!-- Assaí (Foco) -->
-                                <div class="child-node connector-purple">
-                                    <div class="tree-node node-purple">Assaí (40%)</div>
-                                    
-                                    <!-- Nível 3: Tipos de Agendamento Assaí -->
-                                    <div class="tree-children children-purple">
-                                        
-                                        <!-- Sem NF -->
-                                        <div class="child-node connector-purple">
-                                            <div class="tree-node border-none shadow-none text-xs">Agendamento sem NF (22%)</div>
-                                            <!-- Fluxo Sem NF -->
-                                            <div class="flex flex-col items-center mt-2 gap-1 relative">
-                                                <div class="w-px h-4 bg-purple-200"></div>
-                                                <div class="flow-text">Solicitação <span class="auto-tag">(Automatizado)</span></div>
-                                                <div class="w-px h-4 bg-purple-200"></div>
-                                                <div class="flow-text">Conquista <span class="auto-tag">(Automatizado)</span></div>
-                                                <div class="w-px h-4 bg-purple-200"></div>
-                                                <div class="flow-text">Formalização <span class="manual-tag">(Manual)</span></div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Com NF -->
-                                        <div class="child-node connector-purple">
-                                            <div class="tree-node border-none shadow-none text-xs">Agendamento com NF (78%)</div>
-                                            <!-- Fluxo Com NF -->
-                                            <div class="flex flex-col items-center mt-2 gap-1 relative">
-                                                <div class="w-px h-4 bg-purple-200"></div>
-                                                <div class="flow-text">Aguarda faturamento <span class="manual-tag">(Manual)</span></div>
-                                                <div class="w-px h-4 bg-purple-200"></div>
-                                                <div class="flow-text">Solicitação <span class="auto-tag">(Automatizado)</span></div>
-                                                <div class="w-px h-4 bg-purple-200"></div>
-                                                <div class="flow-text">Conquista <span class="auto-tag">(Automatizado)</span></div>
-                                                <div class="w-px h-4 bg-purple-200"></div>
-                                                <div class="flow-text">Formalização <span class="manual-tag">(Manual)</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Outros Players C&C -->
-                                <div class="child-node connector-purple"><div class="tree-node node-purple">Fort Atacadista (19%)</div></div>
-                                <div class="child-node connector-purple"><div class="tree-node node-purple">Atacadão (18%)</div></div>
-                                <div class="child-node connector-purple"><div class="tree-node node-purple">Muffato (10%)</div></div>
-                                <div class="child-node connector-purple"><div class="tree-node node-purple">Tenda (4%)</div></div>
-                                <div class="child-node connector-purple"><div class="tree-node node-purple">Outros (9%)</div></div>
-                            </div>
-                        </div>
-
-                        <!-- Outros Canais -->
-                        <div class="child-node connector-orange"><div class="tree-node node-purple">TT (27%)</div></div>
-                        <div class="child-node connector-orange"><div class="tree-node node-purple">SMR (15%)</div></div>
-                        <div class="child-node connector-orange"><div class="tree-node node-purple">GKA (12%)</div></div>
-                        <div class="child-node connector-orange"><div class="tree-node node-orange">Farma (2%)</div></div>
-                        <div class="child-node connector-orange"><div class="tree-node node-orange">FoodService (1%)</div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
         <!-- Seção: Comparativo de Processo -->
         <div class="card p-6 mb-8 bg-white border border-slate-200">
@@ -507,7 +429,7 @@
                 funnelGrid.innerHTML += `
                     <div class="funnel-container">
                         <p class="text-[10px] font-bold text-slate-400 mb-2">${row.data.split('/')[0] + '/' + row.data.split('/')[1]}</p>
-                        <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${diaP}</div>
+                        <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${totalP}</div>
                         <div class="funnel-step funnel-mid" title="Cargas destino Assaí">${diaP}</div>
                         <div class="funnel-step funnel-bot" title="Cargas Automatizadas HUB">${diaA}</div>
                         <p class="text-[9px] font-bold text-green-600 mt-1">${((diaA/row.totalAssai)*100).toFixed(0)}% Conv.</p>
@@ -565,6 +487,7 @@
 </body>
 
 </html>
+
 
 
 
