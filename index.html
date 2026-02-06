@@ -432,7 +432,7 @@
                         <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${totalP}</div>
                         <div class="funnel-step funnel-mid" title="Cargas destino Assaí">${diaP}</div>
                         <div class="funnel-step funnel-bot" title="Cargas Automatizadas HUB">${diaA}</div>
-                        <p class="text-[9px] font-bold text-green-600 mt-1">${((diaA/row.totalAssai)*100).toFixed(0)}% Conv.</p>
+                        <p class="text-[9px] font-bold text-green-600 mt-1">${((diaA/diaP)*100).toFixed(0)}% Conv.</p>
                     </div>
                 `;
             });
@@ -487,6 +487,7 @@
 </body>
 
 </html>
+
 
 
 
