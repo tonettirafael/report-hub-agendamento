@@ -140,7 +140,7 @@
                 <p class="text-slate-500">Monitoramento de Produtividade e Evolução de Processos</p>
             </div>
             <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
-                Atualizado: 03/02/2026
+                Atualizado: 06/02/2026
             </div>
         </header>
 
@@ -448,11 +448,14 @@
     <script>
         const prodData = [
             { data: "27/01/2026", planejadoSemNF: 3, planejadoComNF: 23, autoSemNF: 3, autoComNF: 22, horario: "09:47" },
-            { data: "28/01/2026", planejadoSemNF: 2, planejadoComNF: 12, autoSemNF: 2, autoComNF: 8, horario: "08:52" }, 
+            { data: "28/01/2026", planejadoSemNF: 2, planejadoComNF: 12, autoSemNF: 2, autoComNF: 12, horario: "08:52" }, 
             { data: "29/01/2026", planejadoSemNF: 8, planejadoComNF: 13, autoSemNF: 8, autoComNF: 13, horario: "08:48" },
-            { data: "30/01/2026", planejadoSemNF: 4, planejadoComNF: 26, autoSemNF: 4, autoComNF: 12, horario: "08:55" },
+            { data: "30/01/2026", planejadoSemNF: 4, planejadoComNF: 26, autoSemNF: 4, autoComNF: 26, horario: "08:55" },
             { data: "02/02/2026", planejadoSemNF: 14, planejadoComNF: 34, autoSemNF: 14, autoComNF: 34, horario: "08:34" },
-            { data: "03/02/2026", planejadoSemNF: 1, planejadoComNF: 38, autoSemNF: 1, autoComNF: 7, horario: "09:12" }
+            { data: "03/02/2026", planejadoSemNF: 1, planejadoComNF: 38, autoSemNF: 1, autoComNF: 24, horario: "09:12" },
+            { data: "04/02/2026", planejadoSemNF: 0, planejadoComNF: 2, autoSemNF: 0, autoComNF: 2, horario: "08:52" },
+            { data: "05/02/2026", planejadoSemNF: 8, planejadoComNF: 12, autoSemNF: 8, autoComNF: 11, horario: "09:34" },
+            { data: "06/02/2026", planejadoSemNF: 7, planejadoComNF: 23, autoSemNF: 7, autoComNF: 16, horario: "09:52" }
         ];
 
         const historicoHorarios = [
@@ -467,7 +470,10 @@
             { data: "29/01", hora: "08:48", decimal: 8.80 },
             { data: "30/01", hora: "08:55", decimal: 8.91 },
             { data: "02/02", hora: "08:34", decimal: 8.52 },
-            { data: "03/02", hora: "09:12", decimal: 9.04 }
+            { data: "03/02", hora: "09:12", decimal: 9.04 },
+            { data: "04/02", hora: "08:52", decimal: 8.90 },
+            { data: "05/02", hora: "09:34", decimal: 9.51 },
+            { data: "06/02", hora: "09:52", decimal: 9.90 }
         ];
 
        function initDashboard() {
@@ -559,6 +565,7 @@
 </body>
 
 </html>
+
 
 
 
