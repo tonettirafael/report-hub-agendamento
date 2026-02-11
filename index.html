@@ -369,15 +369,18 @@
 
     <script>
         const prodData = [
-            { data: "27/01/2026", planejadoSemNF: 3, planejadoComNF: 23, autoSemNF: 3, autoComNF: 22, horario: "09:47" },
-            { data: "28/01/2026", planejadoSemNF: 2, planejadoComNF: 12, autoSemNF: 2, autoComNF: 12, horario: "08:52" }, 
-            { data: "29/01/2026", planejadoSemNF: 8, planejadoComNF: 13, autoSemNF: 8, autoComNF: 13, horario: "08:48" },
-            { data: "30/01/2026", planejadoSemNF: 4, planejadoComNF: 26, autoSemNF: 4, autoComNF: 26, horario: "08:55" },
-            { data: "02/02/2026", planejadoSemNF: 14, planejadoComNF: 34, autoSemNF: 14, autoComNF: 34, horario: "08:34" },
-            { data: "03/02/2026", planejadoSemNF: 1, planejadoComNF: 38, autoSemNF: 1, autoComNF: 24, horario: "09:12" },
-            { data: "04/02/2026", planejadoSemNF: 0, planejadoComNF: 2, autoSemNF: 0, autoComNF: 2, horario: "08:52" },
-            { data: "05/02/2026", planejadoSemNF: 8, planejadoComNF: 12, autoSemNF: 8, autoComNF: 11, horario: "09:34" },
-            { data: "06/02/2026", planejadoSemNF: 7, planejadoComNF: 23, autoSemNF: 7, autoComNF: 16, horario: "09:52" }
+            { data: "27/01/2026", totalCargas: 164, planejadoSemNF: 3, planejadoComNF: 23, autoSemNF: 3, autoComNF: 22, horario: "09:47" },
+            { data: "28/01/2026", totalCargas: 167, planejadoSemNF: 2, planejadoComNF: 12, autoSemNF: 2, autoComNF: 12, horario: "08:52" }, 
+            { data: "29/01/2026", totalCargas: 175, planejadoSemNF: 8, planejadoComNF: 13, autoSemNF: 8, autoComNF: 13, horario: "08:48" },
+            { data: "30/01/2026", totalCargas: 195, planejadoSemNF: 4, planejadoComNF: 26, autoSemNF: 4, autoComNF: 26, horario: "08:55" },
+            { data: "02/02/2026", totalCargas: 180, planejadoSemNF: 14, planejadoComNF: 34, autoSemNF: 14, autoComNF: 34, horario: "08:34" },
+            { data: "03/02/2026", totalCargas: 198, planejadoSemNF: 1, planejadoComNF: 38, autoSemNF: 1, autoComNF: 24, horario: "09:12" },
+            { data: "04/02/2026", totalCargas: 204, planejadoSemNF: 0, planejadoComNF: 2, autoSemNF: 0, autoComNF: 2, horario: "08:52" },
+            { data: "05/02/2026", totalCargas: 236, planejadoSemNF: 8, planejadoComNF: 12, autoSemNF: 8, autoComNF: 11, horario: "09:34" },
+            { data: "06/02/2026", totalCargas: 211, planejadoSemNF: 7, planejadoComNF: 23, autoSemNF: 7, autoComNF: 16, horario: "09:52" },
+            { data: "09/02/2026", totalCargas: 278, planejadoSemNF: 0, planejadoComNF: 0, autoSemNF: 0, autoComNF: 0, horario: "00:00" },
+            { data: "10/02/2026", totalCargas: 318, planejadoSemNF: 0, planejadoComNF: 0, autoSemNF: 0, autoComNF: 0, horario: "00:00" },
+            { data: "11/02/2026", totalCargas: 200, planejadoSemNF: 0, planejadoComNF: 0, autoSemNF: 0, autoComNF: 0, horario: "00:00" }
         ];
 
         const historicoHorarios = [
@@ -425,11 +428,11 @@
                     </tr>
                 `;
 
-                // Funis
+                // Funis - AGORA USA row.totalCargas
                 funnelGrid.innerHTML += `
                     <div class="funnel-container">
                         <p class="text-[10px] font-bold text-slate-400 mb-2">${row.data.split('/')[0] + '/' + row.data.split('/')[1]}</p>
-                        <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${totalP}</div>
+                        <div class="funnel-step funnel-top" title="Total Cargas Planejadas no dia">${row.totalCargas}</div>
                         <div class="funnel-step funnel-mid" title="Cargas destino Assaí">${diaP}</div>
                         <div class="funnel-step funnel-bot" title="Cargas Automatizadas HUB">${diaA}</div>
                         <p class="text-[9px] font-bold text-green-600 mt-1">${((diaA/diaP)*100).toFixed(0)}% Conv.</p>
@@ -487,9 +490,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
