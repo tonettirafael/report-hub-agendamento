@@ -130,6 +130,38 @@
         .flow-text { font-size: 10px; margin-top: 6px; text-align: center; color: #64748b; }
         .auto-tag { color: #10b981; font-weight: 700; }
         .manual-tag { color: #f43f5e; font-weight: 700; }
+
+        /* Roadmap Card Styles */
+        .roadmap-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .roadmap-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+        }
+        .roadmap-date-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .roadmap-okr {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid;
+        }
+        .okr-icon {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -276,21 +308,13 @@
             <!-- Roadmap -->
             <div class="mt-8 pt-6 border-t border-slate-100">
                 <h4 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2 italic">
+                    <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                    </svg>
                     Roadmap & Próximos Passos
                 </h4>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="p-3 bg-orange-50 border border-orange-100 rounded-lg text-xs">
-                        <p class="font-bold text-orange-700 mb-1">AUTOMAÇÃO DE COMUNICAÇÃO</p>
-                        HUB automatizará a formalização com transportadores.
-                    </div>
-                    <div class="p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs">
-                        <p class="font-bold text-blue-700 mb-1">ROLLOUT ESTRATÉGICO</p>
-                        Próxima semana: Início do piloto com Carrefour.
-                    </div>
-                    <div class="p-3 bg-slate-100 border border-slate-200 rounded-lg text-xs">
-                        <p class="font-bold text-slate-700 mb-1">PADRONIZAÇÃO</p>
-                        Uniformização dos retornos de solicitações via e-mail.
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="roadmap-container">
+                    <!-- Cards serão injetados via JavaScript -->
                 </div>
             </div>
         </div>
@@ -368,6 +392,34 @@
     </div>
 
     <script>
+        // DADOS DE ROADMAP - ESTRUTURA INJETÁVEL
+        const roadmapData = [
+            {
+                titulo: "Formalização automática com transportadores",
+                descricao: "Disparo automático de e-mail para transportadores com agendas conquistadas",
+                dataInicio: "09/02/2026",
+                dataFim: "20/02/2026",
+                okr: "Reduzir tempo de comunicação e possíveis erros",
+                tema: "orange" // orange, blue, slate, purple, green
+            },
+            {
+                titulo: "Automação de agendas com Hodie Booking",
+                descricao: "Automação para cargas com destino ao Atacadão e Grupo Mateus",
+                dataInicio: "12/02/2026",
+                dataFim: "31/03/2026",
+                okr: "Expandir automatização para 2 novos clientes",
+                tema: "orange"
+            },
+            {
+                titulo: "Solicitação de agendas via e-mail",
+                descricao: "Processo de solicitações de agenda via e-mail pelo TNS Booking CT.",
+                dataInicio: "06/04/2026",
+                dataFim: "30/04/2026",
+                okr: "100% das solicitações de e-mail pelo TNS",
+                tema: "orange"
+            }
+        ];
+
         const prodData = [
             { data: "27/01/2026", totalCargas: 164, planejadoSemNF: 3, planejadoComNF: 23, autoSemNF: 3, autoComNF: 22, horario: "09:47" },
             { data: "28/01/2026", totalCargas: 167, planejadoSemNF: 2, planejadoComNF: 12, autoSemNF: 2, autoComNF: 12, horario: "08:52" }, 
@@ -404,6 +456,45 @@
             { data: "11/02", hora: "10:06", decimal: 10.00 }
         ];
 
+        // Função para renderizar os cards do roadmap
+        function renderRoadmap() {
+            const container = document.getElementById('roadmap-container');
+            const temaConfig = {
+                orange: { bg: 'bg-orange-50', border: 'border-orange-100', titulo: 'text-orange-700', badge: 'bg-orange-200 text-orange-800', okrBorder: 'border-orange-200', okrText: 'text-orange-700' },
+                blue: { bg: 'bg-blue-50', border: 'border-blue-100', titulo: 'text-blue-700', badge: 'bg-blue-200 text-blue-800', okrBorder: 'border-blue-200', okrText: 'text-blue-700' },
+                slate: { bg: 'bg-slate-100', border: 'border-slate-200', titulo: 'text-slate-700', badge: 'bg-slate-300 text-slate-800', okrBorder: 'border-slate-300', okrText: 'text-slate-700' },
+                purple: { bg: 'bg-purple-50', border: 'border-purple-100', titulo: 'text-purple-700', badge: 'bg-purple-200 text-purple-800', okrBorder: 'border-purple-200', okrText: 'text-purple-700' },
+                green: { bg: 'bg-green-50', border: 'border-green-100', titulo: 'text-green-700', badge: 'bg-green-200 text-green-800', okrBorder: 'border-green-200', okrText: 'text-green-700' }
+            };
+
+            roadmapData.forEach(item => {
+                const tema = temaConfig[item.tema] || temaConfig.slate;
+                const card = `
+                    <div class="roadmap-card p-3 ${tema.bg} border ${tema.border} rounded-lg text-xs">
+                        <p class="font-bold ${tema.titulo} mb-1">${item.titulo}</p>
+                        <p class="text-slate-700 mb-2 leading-relaxed">${item.descricao}</p>
+                        
+                        <div class="flex gap-1 flex-wrap mb-1">
+                            <span class="roadmap-date-badge ${tema.badge}">
+                                Início: ${item.dataInicio}
+                            </span>
+                            <span class="roadmap-date-badge ${tema.badge}">
+                                Fim: ${item.dataFim}
+                            </span>
+                        </div>
+                        
+                        <div class="roadmap-okr ${tema.okrBorder}">
+                            <svg class="okr-icon ${tema.okrText}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-[10px] font-semibold ${tema.okrText}">${item.okr}</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
        function initDashboard() {
             const tableBody = document.getElementById('table-body');
             const funnelGrid = document.getElementById('funnel-grid');
@@ -431,7 +522,7 @@
                     </tr>
                 `;
 
-                // Funis - AGORA USA row.totalCargas
+                // Funis
                 funnelGrid.innerHTML += `
                     <div class="funnel-container">
                         <p class="text-[10px] font-bold text-slate-400 mb-2">${row.data.split('/')[0] + '/' + row.data.split('/')[1]}</p>
@@ -446,6 +537,9 @@
             document.getElementById('total-planejadas').innerText = totalP;
             document.getElementById('total-automatizadas').innerText = totalA;
             document.getElementById('eficiencia-geral').innerText = ((totalA / totalP) * 100).toFixed(1) + '%';
+
+            // Renderizar roadmap
+            renderRoadmap();
 
             new Chart(document.getElementById('horariosChart'), {
                 type: 'line',
@@ -491,6 +585,4 @@
         window.onload = initDashboard;
     </script>
 </body>
-
 </html>
-
